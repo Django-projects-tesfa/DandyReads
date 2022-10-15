@@ -2,9 +2,16 @@ from math import fabs
 from django.shortcuts import render
 from django.http import HttpResponse
 from booklibraryapp.googlebookapi import GoogleBookApi
+from .models import Profile
 # Create your views here.
 def index(request):
-    return render(request, "booklibrary/index.html")
+    if request.user:
+        currentUserProfile = Profile.objects.filter(user=request.user)[0]
+
+    context = {
+        'currentUserProfile': currentUserProfile
+    }
+    return render(request, "booklibrary/index.html", context)
 
 def toReadList(request):
     return render(request, "booklibrary/toReadList.html")
