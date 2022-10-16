@@ -217,6 +217,7 @@ def addToReadingList(request, pk):
     baseurl = "https://www.googleapis.com/books/v1/volumes?q="
     googleApi = GoogleBookApi(baseurl)
     bookJson = googleApi.searchBookByISBN13(str(pk))
+    print(pk, "pk")
 
     if request.user: #authenticate here
         #print("checked user")
