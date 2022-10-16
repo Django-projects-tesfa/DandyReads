@@ -1,1 +1,18 @@
 {% extends 'partials/base.html' %}
+
+
+{% block content %}
+<div class="pt-4 mt-3 h-100">
+    <small class="text-light mt-4">Sunday 16, 2022</small>
+    <div class="text-center">
+        <p class="text-light h1">Welcome to DandyReads</p>
+        <p class="text-light mt-4 text-justify ">
+            DandyReads is a full stack web application built using Django and Python. Users can search for books on
+            Google Books api and will be able to add them to their reading list. DandyReads also provides TIP (Time Investment Prediction) calculation 
+            for users to understand how long a certain book will take them to read based on the average reading speed and the size of the book.
+        </p>
+        <hr class="bg-light">
+        <a href="{%url 'findabook'%}" class="btn btn-dark btn-lg btn-block m-3">Get started</a>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,42 @@
+{% extends 'partials/base.html' %}
+{% load crispy_forms_tags %}
+{% block contentLeftSide %}
+<form method="get" id="searchabookform">
+    {% csrf_token %}
+    <input action="{% url 'findabook' %}" name="searchBooksByTitleQuery" type="search" class="form-control mb-2" id="bookTitleSearchInputID" placeholder="Search by book title">
+    <input class="btn btn-success w-100 mb-4" type="submit" value="Submit">
+</form>
+{% endblock %}
+
+{% block content %}
+{%if searchBooksResult%}
+<div class="border p-3">
+        {% for book in searchBooksResult %}
+        
+        <div class="border p-3 mb-3 bg-light">
+            <small>{{ book.volumeInfo.publishedDate }}</small>
+            <div class="row">
+                <div class="col-md-4">
+                    <img src="{{ book.volumeInfo.imageLinks.thumbnail }}" alt="{{ book.volumeInfo.title }} cover thumnail" class="img-thumbnail">
+                </div>
+                <div class="col-md-8 mt-2">
+                    <p>
+                        <!-- check for existence of each -->
+                        <b>{{ book.volumeInfo.title }}</b> 
+                        <br> By {{ book.volumeInfo.authors }} 
+                        <br> Average Rating: {{ book.volumeInfo.averageRating }} and was rated by {{ book.volumeInfo.ratingsCount }} people
+                        <br> Pages: {{ book.volumeInfo.pageCount }}  
+                        <br> Genre: {{ book.volumeInfo.categories }}
+                        <br> Language: {{ book.volumeInfo.language }}
+                        <br> ISBN13: {{ book.volumeInfo.industryIdentifiers.0.identifier }}
+                    </p>
+                    <hr>
+                    <a href="{% url 'addtoreadinglist' book.volumeInfo.industryIdentifiers.0.identifier%}" class="btn btn-outline-success btn-sm">Will read</a>
+                    <a href="{% url 'searchdetailview' book.volumeInfo.industryIdentifiers.0.identifier %}" class="btn btn-outline-info btn-sm">Description</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+{% endif %}
+{% endblock %}

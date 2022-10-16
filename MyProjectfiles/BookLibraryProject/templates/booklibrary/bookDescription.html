@@ -1,0 +1,101 @@
+{% extends 'partials/base.html' %} 
+{% block contentRightSide %}
+<div class="border p-3 bg-light mt-2">
+    <h4>Statistics</h4>
+    <hr>
+    <div class="border p-3 mb-2">
+        
+        <h3>Book title</h3>
+        <p class="text-center text-success">
+            {{ selectedBook.items.0.volumeInfo.title }}
+        </p>
+        
+    </div>
+
+    <div class="border p-3 mb-2">
+        <h3>Total pages</h3>
+        <h4 class="text-center text-success">
+            {{ selectedBook.items.0.volumeInfo.pageCount }}
+        </h4>
+    </div>
+
+    <div class="border p-3 mb-2">
+        <h5>TIP Calculation</h5>
+        <p class="text-center">
+        <h1 class="text-success text-center">{{ tip_calculation  }} days </h1> <small> (You can finish this book in  if you read 2 hrs per day in average reading speed which is 100pages per 2.8 hours) </small>
+        </p>
+    </div>
+
+</div>
+{% endblock %}
+{% block contentLeftSide %}
+<div class="border p-3 bg-light mb-2">
+    <h4>Status</h4>
+    <hr>
+    {% for books in inProgressBooksJsonList %}
+        {%for book in books%}
+        <div class="border p-3 mb-2">
+            <small class="text-warning">In Progress</small>
+            <h3>{{ book.volumeInfo.title }}</h3>
+            <p class="text-center">
+                {{ book.volumeInfo.authors }}
+            </p>
+            <div class="text-center">
+                <a class="btn btn-success btn-sm">Done</a>
+            </div>
+        </div>
+        {% endfor %}
+    {% endfor %}
+
+    {% for books in alreadyReadToReadBooksJsonList %}
+        {%for book in books%}
+        <div class="border p-3 mb-2">
+            <small class="text-success">Completed</small>
+            <h3>{{ book.volumeInfo.title }}</h3>
+            <p class="text-center">
+                {{ book.volumeInfo.authors }}
+            </p>
+            <div class="text-center">
+                <a class="btn btn-danger btn-sm">Remove</a>
+            </div>
+        </div>
+        {% endfor %}
+    {% endfor %}
+    
+</div>
+{% endblock %}
+
+{% block content %}
+    <div class="border p-3">
+        {% for books in userToReadBooksJsonList %}
+
+        {%for book in books%}
+        <div class="border p-3 mb-3 bg-light">
+            <small> </small>
+            <div class="row">
+                <div class="col-md-4">
+                    <img src="{{ book.volumeInfo.imageLinks.thumbnail }}" alt="{{ book.volumeInfo.title }} cover thumnail" class="img-thumbnail">
+                </div>
+                <div class="col-md-8 mt-2">
+                    <p>
+                        <!-- check for existence of each -->
+                        <b>{{ book.volumeInfo.title }}</b> 
+                        <br> By {{ book.volumeInfo.authors }} 
+                        <br> Average Rating: {{ book.volumeInfo.averageRating }} and was rated by {{ book.volumeInfo.ratingsCount }} people
+                        <br> Pages: {{ book.volumeInfo.pageCount }}  
+                        <br> Genre: {{ book.volumeInfo.categories }}
+                        <br> Language: {{ book.volumeInfo.language }}
+                    </p>
+                    <hr>
+                    <a href="{%url 'startedreadingconfirmation' book.volumeInfo.industryIdentifiers.0.identifier%}" class="btn btn-outline-warning btn-sm">Start</a>
+                    
+                    <a href="{%url 'bookdescription' book.volumeInfo.industryIdentifiers.0.identifier%}" class="btn btn-outline-info btn-sm">Statistics</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        {% endfor %}
+
+        
+    </div>
+{% endblock %}

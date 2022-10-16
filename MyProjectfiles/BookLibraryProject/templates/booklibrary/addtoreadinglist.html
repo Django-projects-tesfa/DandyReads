@@ -1,0 +1,14 @@
+{% extends 'partials/base.html' %} 
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="bg-light border-3 border border-bottom border-success rounded-pill">
+    <div class="text-center m-3">
+        <p class="text-success">Are you sure you want to add <b>{{book.items.0.volumeInfo.title}}</b> to your to-read-list?</p>
+        <form method="POST">
+            {% csrf_token %}
+            {{form|crispy}}
+            <input class="btn btn-outline-warning btn-block" type="submit" value="Add to read list">
+         </form>
+    </div>
+</div>
+{% endblock %}
