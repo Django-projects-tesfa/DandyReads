@@ -8,7 +8,7 @@ How to run:
 
 Install ```virtualenv``` if you don't have it yet
 ```pip3 install virtualenv```
-<br>
+############################
 ```virtualenv venv```
 ```source venv/bin/activate```
 ```pip3 install requirements.txt```
