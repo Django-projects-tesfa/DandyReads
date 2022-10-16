@@ -31,7 +31,8 @@ class Profile(models.Model):
         return self.user.username
 
 class BooksLibrary(models.Model):
-    userProfile = models.OneToOneField(Profile, on_delete=models.CASCADE)
+    # userProfile = models.OneToOneField(Profile, on_delete=models.CASCADE)
+    userProfile = models.ManyToManyField(Profile)
     bookISBN13 = models.IntegerField(max_length=20)
     toReadList = models.BooleanField(default=False)
     completedReading = models.BooleanField(default=False)

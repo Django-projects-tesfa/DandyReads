@@ -52,7 +52,7 @@
 {% block content %}
     <div class="border p-3">
         {% for books in userToReadBooksJsonList %}
-
+        {{ userToReadBooksJsonList.count }}
         {%for book in books%}
         <div class="border p-3 mb-3 bg-light">
             <small> </small>
@@ -72,7 +72,8 @@
                     </p>
                     <hr>
                     <a class="btn btn-outline-success btn-sm">Add to Readlist</a>
-                    <a href="{%url 'bookdescription' book.volumeInfo.industryIdentifiers.0.identifier%}" class="btn btn-outline-info btn-sm">Description</a>
+                    <a href="{%url 'bookdescription' book.volumeInfo.industryIdentifiers.0.identifier%}" class="btn btn-outline-info btn-sm">Statistics</a>
+                    <a class="btn btn-outline-warning btn-sm">Start</a>
                 </div>
             </div>
         </div>

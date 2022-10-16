@@ -5,24 +5,23 @@
     <hr>
     <div class="border p-3 mb-2">
         <h3>Book title</h3>
-        <p class="text-center">
+        <p class="text-center text-success">
             {{ selectedBook.items.0.volumeInfo.title }}
         </p>
     </div>
 
     <div class="border p-3 mb-2">
         <h3>Total pages</h3>
-        <h4 class="text-center">
+        <h4 class="text-center text-success">
             {{ selectedBook.items.0.volumeInfo.pageCount }}
         </h4>
     </div>
 
     <div class="border p-3 mb-2">
-        <h3>TIP</h3>
-        <h4 class="text-center">
-            {{ selectedBook.items.0.volumeInfo.pageCountget_type  }}
-            1 hr per day for 5 days
-        </h4>
+        <h5>TIP Calculation</h5>
+        <p class="text-center">
+        <h1 class="text-success text-center">{{ tip_calculation  }} days </h1> <small> (You can finish this book in  if you read 2 hrs per day in average reading speed which is 100pages per 2.8 hours) </small>
+        </p>
     </div>
 
 </div>
@@ -37,6 +36,9 @@
         <p class="text-center">
             By Michelle Obama
         </p>
+        <div class="text-center">
+            <a class="btn btn-danger btn-sm">Remove</a>
+        </div>
     </div>
 
     <div class="border p-3 mb-2">
@@ -45,6 +47,10 @@
         <p class="text-center">
             By Tesfatsion
         </p>
+        <div class="text-center">
+            <a class="btn btn-success btn-sm">Done</a>
+        </div>
+        
     </div>
 
 </div>
@@ -73,7 +79,8 @@
                     </p>
                     <hr>
                     <a class="btn btn-outline-success btn-sm">Add to Readlist</a>
-                    <a href="{%url 'bookdescription' book.volumeInfo.industryIdentifiers.0.identifier%}" class="btn btn-outline-info btn-sm">Description</a>
+                    <a href="{%url 'bookdescription' book.volumeInfo.industryIdentifiers.0.identifier%}" class="btn btn-outline-info btn-sm">Statistics</a>
+                    <a class="btn btn-outline-warning btn-sm">Start</a>
                 </div>
             </div>
         </div>

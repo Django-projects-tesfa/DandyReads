@@ -4,6 +4,7 @@ from django.http import HttpResponse
 from booklibraryapp.googlebookapi import GoogleBookApi
 from .models import BooksLibrary, Profile
 from .forms import MoveToToReadListForm
+import math
 # Create your views here.
 def index(request):
     if request.user:
@@ -22,18 +23,23 @@ def toReadList(request):
     userToReadBooksJsonList = []
     if request.user:
         userprofile = Profile.objects.filter(user = request.user.id)[0]
-        userToReadList = BooksLibrary.objects.filter(userProfile = userprofile, toReadList=True)
+        userToReadList = BooksLibrary.objects.filter(toReadList=True)
     else:
         userprofile = ''
     baseurl = "https://www.googleapis.com/books/v1/volumes?q="
     googleApi = GoogleBookApi(baseurl)
     for isbn13 in userToReadList:
         bookJson = googleApi.searchBookByISBN13(str(isbn13))
-        userToReadBooksJsonList.append(bookJson['items'])
+        
+        try:
+            userToReadBooksJsonList.append(bookJson['items'])
+        except:
+            pass
     context = {
         'userToReadList': userToReadList,
         'userToReadBooksJsonList': userToReadBooksJsonList,
     }
+    print(userToReadList, "count")
     return render(request, "booklibrary/toReadList.html", context)
 
 def bookSideDescription(request, pk):
@@ -47,13 +53,23 @@ def bookSideDescription(request, pk):
     baseurl = "https://www.googleapis.com/books/v1/volumes?q="
     googleApi = GoogleBookApi(baseurl)
     selectedBook = googleApi.searchBookByISBN13(pk)
+    pages = selectedBook['items'][0]['volumeInfo']['pageCount']
+    # tip (time investment prediction)
+    total_hourse_needed = (int(pages)*2.9)/100
+    time_per_day = 2
+    days_needed = math.ceil(total_hourse_needed/time_per_day)
+    tip_calculation = str(days_needed)
     for isbn13 in userToReadList:
         bookJson = googleApi.searchBookByISBN13(str(isbn13))
-        userToReadBooksJsonList.append(bookJson['items'])
+        try:
+            userToReadBooksJsonList.append(bookJson['items'])
+        except:
+            pass
     context = {
         'userToReadList': userToReadList,
         'userToReadBooksJsonList': userToReadBooksJsonList,
-        'selectedBook': selectedBook
+        'selectedBook': selectedBook,
+        'tip_calculation': tip_calculation,
     }
     return render(request, "booklibrary/bookDescription.html", context)
 
