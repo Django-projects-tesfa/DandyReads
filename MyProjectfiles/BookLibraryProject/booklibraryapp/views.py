@@ -149,7 +149,7 @@ def findaBook(request):
     baseurl = "https://www.googleapis.com/books/v1/volumes?q="
     googleApi = GoogleBookApi(baseurl)
     if request.user: #authenticate here
-        print("checked user")
+        #print("checked user")
         userprofile = Profile.objects.filter(user = request.user.id)[0]
 
     if 'searchBooksByTitleQuery' in request.GET:
@@ -218,25 +218,26 @@ def addToReadingList(request, pk):
     googleApi = GoogleBookApi(baseurl)
     bookJson = googleApi.searchBookByISBN13(str(pk))
 
-    # print("Adding to read list")
-    # if request.user: #authenticate here
-    #     print("checked user")
-    #     userprofile = Profile.objects.filter(user = request.user.id)[0]
+    if request.user: #authenticate here
+        #print("checked user")
+        userprofile = Profile.objects.filter(user = request.user.id)[0]
+    
+    if request.method == 'POST':
+        form = MoveToToReadListForm(request.POST)
+        if form.is_valid:
+            obj = form.save(commit=False)
+            obj.bookISBN13 = int(pk)
+            obj.toReadList = True
+            # obj.userProfile = userprofile
+            obj.save()
+            return redirect('/toreadlist')
+    else:
+        form = MoveToToReadListForm()
+    
 
-    # if request.method == 'POST':
-    #     print("post request")
-    #     form = MoveToToReadListForm(request.POST)
-    #     if form.is_valid():
-    #         print("Form is valid")
-    #         obj = form.save(commit=False)
-    #         obj.userProfile = userprofile
-    #         obj.bookISBN13 = pk
-    #         obj.save()
-
-    # else:
-    #     form = MoveToToReadListForm()
     context = {
-        "book": bookJson
+        "book": bookJson,
+        'form': form
     }
     return render(request, "booklibrary/addtoreadinglist.html", context)
 
