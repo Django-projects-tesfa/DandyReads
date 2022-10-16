@@ -1,4 +1,4 @@
-# BookLibrary
+# DandyReads
 
 <img width="1512" alt="Screen Shot 2022-10-16 at 7 27 02 AM" src="https://user-images.githubusercontent.com/62855279/196033022-bfb2b3c7-eef8-4626-b2cd-28d2154fea5d.png">
 <img width="1512" alt="Screen Shot 2022-10-16 at 7 27 56 AM" src="https://user-images.githubusercontent.com/62855279/196033028-dc420776-6531-482e-b74f-3fe4b4edf5a6.png">
