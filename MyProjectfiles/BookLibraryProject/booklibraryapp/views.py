@@ -1,7 +1,7 @@
 from django.shortcuts import redirect, render
 from booklibraryapp.googlebookapi import GoogleBookApi
 from .models import BooksLibrary, Profile
-from .forms import MoveToToReadListForm
+from .forms import MoveToToReadListForm, StartReadingBook
 import math
 # Create your views here.
 def index(request):
@@ -155,7 +155,10 @@ def findaBook(request):
     if 'searchBooksByTitleQuery' in request.GET:
         bookSearchTitle = request.GET['searchBooksByTitleQuery']
         # bookSearchTitle = request.GET['bookTitleSearchInputID']
-        searchBooksResult = googleApi.searchBookByTitle(bookSearchTitle)
+        try:
+            searchBooksResult = googleApi.searchBookByTitle(bookSearchTitle)['items']
+        except:
+            pass
     # searchBooksResult['items'][0]['volumeInfo']['imageLinks']['thumbnail']
 
     if request.method == 'POST':
@@ -171,7 +174,7 @@ def findaBook(request):
     else:
         form = MoveToToReadListForm()
     context = {
-        'searchBooksResult': searchBooksResult['items'] if searchBooksResult else "",
+        'searchBooksResult': searchBooksResult,
         'form': form
     }
 
@@ -187,38 +190,31 @@ def addToReadingList(request, pk):
     """
     pk: is the isbn13 of the book
     """
-    print("Adding to read list")
-    if request.user: #authenticate here
-        print("checked user")
-        userprofile = Profile.objects.filter(user = request.user.id)[0]
+    baseurl = "https://www.googleapis.com/books/v1/volumes?q="
+    googleApi = GoogleBookApi(baseurl)
+    bookJson = googleApi.searchBookByISBN13(str(pk))
 
-    if request.method == 'POST':
-        print("post request")
-        form = MoveToToReadListForm(request.POST)
-        if form.is_valid():
-            print("Form is valid")
-            obj = form.save(commit=False)
-            obj.userProfile = userprofile
-            obj.bookISBN13 = pk
-            obj.save()
-
-    else:
-        form = MoveToToReadListForm()
+    # print("Adding to read list")
+    # if request.user: #authenticate here
+    #     print("checked user")
+    #     userprofile = Profile.objects.filter(user = request.user.id)[0]
 
     # if request.method == 'POST':
-    #     print('Got request')
-    #     # bookISPN13 = request.GET['searchBooksByTitleQuery1']
+    #     print("post request")
     #     form = MoveToToReadListForm(request.POST)
-    #     if form.is_vaid:
+    #     if form.is_valid():
+    #         print("Form is valid")
     #         obj = form.save(commit=False)
     #         obj.userProfile = userprofile
     #         obj.bookISBN13 = pk
     #         obj.save()
-            
-    #         print("form is valid and added element")
-    # #         # return redirect('')
 
-    return render(request, "booklibrary/addtoreadinglist.html")
+    # else:
+    #     form = MoveToToReadListForm()
+    context = {
+        "book": bookJson
+    }
+    return render(request, "booklibrary/addtoreadinglist.html", context)
 
 
 # used for updating status

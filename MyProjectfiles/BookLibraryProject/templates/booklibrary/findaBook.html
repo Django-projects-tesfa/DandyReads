@@ -31,7 +31,7 @@
                         <br> ISBN13: {{ book.volumeInfo.industryIdentifiers.0.identifier }}
                     </p>
                     <hr>
-                    <a class="btn btn-outline-success btn-sm">Will read</a>
+                    <a href="{% url 'addtoreadinglist' book.volumeInfo.industryIdentifiers.0.identifier%}" class="btn btn-outline-success btn-sm">Will read</a>
                     <a href="{% url 'searchdetailview' book.volumeInfo.industryIdentifiers.0.identifier %}" class="btn btn-outline-info btn-sm">Description</a>
                 </div>
             </div>

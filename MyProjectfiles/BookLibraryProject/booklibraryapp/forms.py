@@ -7,3 +7,8 @@ class MoveToToReadListForm(forms.ModelForm):
     class Meta:
         model = BooksLibrary
         fields = ['bookISBN13']
+
+class StartReadingBook(forms.ModelForm):
+    class Meta:
+        model = BooksLibrary
+        fields = []

@@ -84,9 +84,8 @@
                         <br> Language: {{ book.volumeInfo.language }}
                     </p>
                     <hr>
-                    <a class="btn btn-outline-success btn-sm">Add to Readlist</a>
-                    <a href="{%url 'bookdescription' book.volumeInfo.industryIdentifiers.0.identifier%}" class="btn btn-outline-info btn-sm">Statistics</a>
                     <a class="btn btn-outline-warning btn-sm">Start</a>
+                    <a href="{%url 'bookdescription' book.volumeInfo.industryIdentifiers.0.identifier%}" class="btn btn-outline-info btn-sm">Statistics</a>
                 </div>
             </div>
         </div>

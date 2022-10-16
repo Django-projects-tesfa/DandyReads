@@ -1,0 +1,8 @@
+{% extends 'partials/base.html' %} 
+{% block content %}
+<div class="bg-light border-3 border border-bottom border-success rounded-pill">
+    <div class="text-center m-3">
+        <p class="text-success">Successfully added <b>{{book.items.0.volumeInfo.title}}</b> to your to-read-list!</p>
+    </div>
+</div>
+{% endblock %}
