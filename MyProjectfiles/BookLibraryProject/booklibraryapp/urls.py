@@ -8,5 +8,6 @@ urlpatterns = [
     path('findabook', views.findaBook, name='findabook'),
     path('addtoreadinglist/<str:pk>/', views.addToReadingList, name="addtoreadinglist"),
     path('bookdescription/<str:pk>/', views.bookSideDescription, name="bookdescription"),
+    path('searchdetailview/<str:pk>/', views.searchDetailView,name="searchdetailview"),
     path('test', views.test, name='test')
 ]

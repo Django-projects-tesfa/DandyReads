@@ -43,6 +43,7 @@ def toReadList(request):
     return render(request, "booklibrary/toReadList.html", context)
 
 def bookSideDescription(request, pk):
+    # pk is isbn13
     userToReadList = []
     userToReadBooksJsonList = []
     if request.user:
@@ -72,6 +73,37 @@ def bookSideDescription(request, pk):
         'tip_calculation': tip_calculation,
     }
     return render(request, "booklibrary/bookDescription.html", context)
+
+def searchDetailView(request, pk):
+    userToReadList = []
+    userToReadBooksJsonList = []
+    if request.user:
+        userprofile = Profile.objects.filter(user = request.user.id)[0]
+        userToReadList = BooksLibrary.objects.filter(userProfile = userprofile, toReadList=True)
+    else:
+        userprofile = ''
+    baseurl = "https://www.googleapis.com/books/v1/volumes?q="
+    googleApi = GoogleBookApi(baseurl)
+    selectedBook = googleApi.searchBookByISBN13(pk)
+    pages = selectedBook['items'][0]['volumeInfo']['pageCount']
+    # tip (time investment prediction)
+    total_hourse_needed = (int(pages)*2.9)/100
+    time_per_day = 2
+    days_needed = math.ceil(total_hourse_needed/time_per_day)
+    tip_calculation = str(days_needed)
+    for isbn13 in userToReadList:
+        bookJson = googleApi.searchBookByISBN13(str(isbn13))
+        try:
+            userToReadBooksJsonList.append(bookJson['items'])
+        except:
+            pass
+    context = {
+        'userToReadList': userToReadList,
+        'userToReadBooksJsonList': userToReadBooksJsonList,
+        'selectedBook': selectedBook,
+        'tip_calculation': tip_calculation,
+    }
+    return render(request, "booklibrary/searchDetailView.html", context)
 
 def findaBook(request):
     searchBooksResult=""

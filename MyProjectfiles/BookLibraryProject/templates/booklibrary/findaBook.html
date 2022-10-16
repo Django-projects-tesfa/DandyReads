@@ -9,6 +9,7 @@
 {% endblock %}
 
 {% block content %}
+{%if searchBooksResult%}
 <div class="border p-3">
         {% for book in searchBooksResult %}
         
@@ -31,10 +32,11 @@
                     </p>
                     <hr>
                     <a class="btn btn-outline-success btn-sm">Will read</a>
-                    <a class="btn btn-outline-info btn-sm">Description</a>
+                    <a href="{% url 'searchdetailview' book.volumeInfo.industryIdentifiers.0.identifier %}" class="btn btn-outline-info btn-sm">Description</a>
                 </div>
             </div>
         </div>
         {% endfor %}
     </div>
+{% endif %}
 {% endblock %}
