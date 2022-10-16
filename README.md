@@ -7,10 +7,13 @@ for users to understand how long a certain book will take them to read based on 
 How to run:
 
 Install ```virtualenv``` if you don't have it yet
+
 ```pip3 install virtualenv```
 
 Create and activate new virtual environment
+
 ```virtualenv venv```
+
 ```source venv/bin/activate```
 
 Install ```requirements.txt```
@@ -18,10 +21,10 @@ Install ```requirements.txt```
 ```pip3 install requirements.txt```
 
 Now run the django server
+
 ```python3 manage.py runserver```
 
-Navigate to local host in your browser to access the web application
-```http://127.0.0.1:8000/```
+Navigate to local host in your browser to access the web application ```http://127.0.0.1:8000/```
 
 
 <img width="1512" alt="Screen Shot 2022-10-16 at 7 27 02 AM" src="https://user-images.githubusercontent.com/62855279/196033022-bfb2b3c7-eef8-4626-b2cd-28d2154fea5d.png">
