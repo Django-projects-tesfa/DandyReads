@@ -1,7 +1,7 @@
 from django.shortcuts import redirect, render
 from booklibraryapp.googlebookapi import GoogleBookApi
 from .models import BooksLibrary, Profile
-from .forms import MoveToToReadListForm, StartReadingBook
+from .forms import MoveToToReadListForm, StartReadingBookForm
 import math
 # Create your views here.
 def index(request):
@@ -183,6 +183,30 @@ def findaBook(request):
 def test(request):
     print("helloooooooo")
     return render(request, "booklibrary/random.html")
+
+def startedReadingConfirmation(request, pk):
+    book = BooksLibrary.objects.get(bookISBN13=pk)
+
+    if request.method == 'POST':
+        form = StartReadingBookForm(request.POST, instance=book)
+        if form.is_valid:
+            obj = form.save(commit=False)
+            obj.started = True
+            obj.save()
+            return redirect('/toreadlist')
+    else:
+        form = StartReadingBookForm(instance=book)
+
+    baseurl = "https://www.googleapis.com/books/v1/volumes?q="
+    googleApi = GoogleBookApi(baseurl)
+    selectedBook = googleApi.searchBookByISBN13(pk)
+
+
+    context = {
+        'book':selectedBook,
+        'form':form
+    }
+    return render(request, 'booklibrary/startedReadingConfirmation.html', context)
 
 
 
