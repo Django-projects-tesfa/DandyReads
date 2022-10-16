@@ -36,6 +36,27 @@ def toReadList(request):
     }
     return render(request, "booklibrary/toReadList.html", context)
 
+def bookSideDescription(request, pk):
+    userToReadList = []
+    userToReadBooksJsonList = []
+    if request.user:
+        userprofile = Profile.objects.filter(user = request.user.id)[0]
+        userToReadList = BooksLibrary.objects.filter(userProfile = userprofile, toReadList=True)
+    else:
+        userprofile = ''
+    baseurl = "https://www.googleapis.com/books/v1/volumes?q="
+    googleApi = GoogleBookApi(baseurl)
+    selectedBook = googleApi.searchBookByISBN13(pk)
+    for isbn13 in userToReadList:
+        bookJson = googleApi.searchBookByISBN13(str(isbn13))
+        userToReadBooksJsonList.append(bookJson['items'])
+    context = {
+        'userToReadList': userToReadList,
+        'userToReadBooksJsonList': userToReadBooksJsonList,
+        'selectedBook': selectedBook
+    }
+    return render(request, "booklibrary/bookDescription.html", context)
+
 def findaBook(request):
     searchBooksResult=""
     baseurl = "https://www.googleapis.com/books/v1/volumes?q="

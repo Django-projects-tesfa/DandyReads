@@ -1,4 +1,4 @@
-{% extends 'partials/base.html' %}
+{% extends 'partials/base.html' %} 
 {% block contentRightSide %}
 <div class="border p-3 bg-light mt-2">
     <h4>Statistics</h4>
@@ -6,20 +6,21 @@
     <div class="border p-3 mb-2">
         <h3>Book title</h3>
         <p class="text-center">
-            Becoming
+            {{ selectedBook.items.0.volumeInfo.title }}
         </p>
     </div>
 
     <div class="border p-3 mb-2">
         <h3>Total pages</h3>
         <h4 class="text-center">
-            463
+            {{ selectedBook.items.0.volumeInfo.pageCount }}
         </h4>
     </div>
 
     <div class="border p-3 mb-2">
         <h3>TIP</h3>
         <h4 class="text-center">
+            {{ selectedBook.items.0.volumeInfo.pageCountget_type  }}
             1 hr per day for 5 days
         </h4>
     </div>
