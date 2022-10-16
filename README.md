@@ -1,12 +1,14 @@
 # DandyReads
+-------------------------------
 DandyReads is a full stack web application built using Django and Python. Users can search for books on
 Google Books api and will be able to add them to their reading list. DandyReads also provides TIP (Time Investment Prediction) calculation 
 for users to understand how long a certain book will take them to read based on the average reading speed and the size of the book.
 
-To run:
+How to run:
 
+Install ```virtualenv``` if you don't have it yet
 ```pip3 install virtualenv```
-g
+<br>
 ```virtualenv venv```
 ```source venv/bin/activate```
 ```pip3 install requirements.txt```
