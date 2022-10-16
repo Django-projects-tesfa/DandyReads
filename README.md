@@ -6,6 +6,7 @@ for users to understand how long a certain book will take them to read based on 
 To run:
 
 ```pip3 install virtualenv```
+g
 ```virtualenv venv```
 ```source venv/bin/activate```
 ```pip3 install requirements.txt```
