@@ -19,3 +19,9 @@ class GoogleBookApi():
         apiUrl = self.baseUrl + title
         result = requests.get(apiUrl)
         return json.loads(result.text)
+    
+    def searchBookByISBN13(self, isbn13):
+        # https://www.googleapis.com/books/v1/volumes?q=isbn:9780385504201
+        apiUrl = self.baseUrl + "isbn:" + isbn13
+        result = requests.get(apiUrl)
+        return json.loads(result.text)

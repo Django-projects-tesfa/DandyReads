@@ -1,5 +1,5 @@
 {% extends 'partials/base.html' %}
-
+{% load crispy_forms_tags %}
 {% block contentLeftSide %}
 <form method="get" id="searchabookform">
     {% csrf_token %}
@@ -27,9 +27,25 @@
                         <br> Pages: {{ book.volumeInfo.pageCount }}  
                         <br> Genre: {{ book.volumeInfo.categories }}
                         <br> Language: {{ book.volumeInfo.language }}
+                        <br> ISBN13: {{ book.volumeInfo.industryIdentifiers.0.identifier }}
                     </p>
                     <hr>
-                    <a class="btn btn-outline-success btn-sm">Add to Readlist</a>
+
+                    <!-- <form method="POST">
+                        {% csrf_token %}
+                        <input href="{% url 'test'%}" class="btn btn-success btn-block mt-2 mb-3" type="submit" value="New Submit">
+                    </form> -->
+
+                    <!-- <form method="get" id="searchabookforms">
+                        {% csrf_token %}
+                        <input href="{% url 'test'%}" name="searchBooksByTitleQuery1" type="search" class="form-control mb-2" id="bookTitleSearchInputIDs" value="{{ book.volumeInfo.industryIdentifiers.0.identifier }}">
+                        <input class="btn btn-success mb-4" type="submit" value="Will read">
+                    </form> -->
+                    <!-- <form method="post" id="formidnum">
+                        {% csrf_token %}
+                        <a name="button" type="submit" href="{% url 'addtoreadinglist' book.volumeInfo.industryIdentifiers.0.identifier %}" class="btn btn-outline-info btn-sm"> Add item</a>
+                    </form> -->
+                    <a class="btn btn-outline-success btn-sm">Will read</a>
                     <a class="btn btn-outline-info btn-sm">Description</a>
                 </div>
             </div>

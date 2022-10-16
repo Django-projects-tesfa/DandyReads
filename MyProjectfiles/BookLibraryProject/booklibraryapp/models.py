@@ -37,4 +37,5 @@ class BooksLibrary(models.Model):
     completedReading = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.userProfile
+        # can be changed if needed
+        return str(self.bookISBN13)

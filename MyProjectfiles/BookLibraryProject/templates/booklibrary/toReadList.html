@@ -1,14 +1,13 @@
 {% extends 'partials/base.html' %}
-
-{% block contentLeftSide %}
-<div class="border p-3 bg-light">
+{% block contentRightSide %}
+<div class="border p-3 bg-light mt-2">
     <h4>Statistics</h4>
     <hr>
     <div class="border p-3 mb-2">
         <h3>Book title</h3>
-        <h4 class="text-center">
+        <p class="text-center">
             Becoming
-        </h4>
+        </p>
     </div>
 
     <div class="border p-3 mb-2">
@@ -27,81 +26,59 @@
 
 </div>
 {% endblock %}
+{% block contentLeftSide %}
+<div class="border p-3 bg-light mb-2">
+    <h4>Status</h4>
+    <hr>
+    <div class="border p-3 mb-2">
+        <small class="text-success">Done</small>
+        <h3>Becoming</h3>
+        <p class="text-center">
+            By Michelle Obama
+        </p>
+    </div>
+
+    <div class="border p-3 mb-2">
+        <small class="text-warning">In Progress</small>
+        <h3>The Davinci Code</h3>
+        <p class="text-center">
+            By Tesfatsion
+        </p>
+    </div>
+
+</div>
+{% endblock %}
 
 {% block content %}
     <div class="border p-3">
-        <div class="border p-3 mb-3 bg-light">
-            <small>20th February 2021</small>
-            <div class="row">
-                <div class="col-md-7">
-                    <p>This is a Task</p>
-                </div>
-                <div class="col-md-5">
-                    <a class="btn btn-success btn-sm">Completed</a>
-                    <a class="btn btn-danger btn-sm">Remove</a>
-                </div>
-            </div>
-        </div>
+        {% for books in userToReadBooksJsonList %}
 
+        {%for book in books%}
         <div class="border p-3 mb-3 bg-light">
-            <small>20th February 2021</small>
+            <small> </small>
             <div class="row">
-                <div class="col-md-8">
-                    <p>This is a Task</p>
-                </div>
                 <div class="col-md-4">
-                    <a class="btn btn-danger btn-sm">Save</a>
+                    <img src="{{ book.volumeInfo.imageLinks.thumbnail }}" alt="{{ book.volumeInfo.title }} cover thumnail" class="img-thumbnail">
+                </div>
+                <div class="col-md-8 mt-2">
+                    <p>
+                        <!-- check for existence of each -->
+                        <b>{{ book.volumeInfo.title }}</b> 
+                        <br> By {{ book.volumeInfo.authors }} 
+                        <br> Average Rating: {{ book.volumeInfo.averageRating }} and was rated by {{ book.volumeInfo.ratingsCount }} people
+                        <br> Pages: {{ book.volumeInfo.pageCount }}  
+                        <br> Genre: {{ book.volumeInfo.categories }}
+                        <br> Language: {{ book.volumeInfo.language }}
+                    </p>
+                    <hr>
+                    <a class="btn btn-outline-success btn-sm">Add to Readlist</a>
+                    <a class="btn btn-outline-info btn-sm">Description</a>
                 </div>
             </div>
         </div>
+        {% endfor %}
+        {% endfor %}
 
-
-        <div class="border p-3 mb-3 bg-light">
-            <small>20th February 2021</small>
-            <div class="row">
-                <div class="col-md-8">
-                    <p>This is a Task</p>
-                </div>
-                <div class="col-md-4">
-                    <a class="btn btn-danger btn-sm">Save</a>
-                </div>
-            </div>
-        </div>
         
-        <div class="border p-3 mb-3 bg-light">
-            <small>20th February 2021</small>
-            <div class="row">
-                <div class="col-md-8">
-                    <p>This is a Task</p>
-                </div>
-                <div class="col-md-4">
-                    <a class="btn btn-danger btn-sm">Save</a>
-                </div>
-            </div>
-        </div>
-
-        <div class="border p-3 mb-3 bg-light">
-            <small>20th February 2021</small>
-            <div class="row">
-                <div class="col-md-8">
-                    <p>This is a Task</p>
-                </div>
-                <div class="col-md-4">
-                    <a class="btn btn-danger btn-sm">Save</a>
-                </div>
-            </div>
-        </div>
-
-        <div class="border p-3 mb-3 bg-light">
-            <small>20th February 2021</small>
-            <div class="row">
-                <div class="col-md-8">
-                    <p>This is a Task</p>
-                </div>
-                <div class="col-md-4">
-                    <a class="btn btn-danger btn-sm">Save</a>
-                </div>
-            </div>
-        </div>
     </div>
 {% endblock %}
