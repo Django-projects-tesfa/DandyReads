@@ -2,5 +2,18 @@
 
 
 {% block content %}
-<h1>{{ currentUserProfile }} </h1>>
+<div class="pt-4 mt-3 h-100">
+    <small class="text-light mt-4">Sunday 16, 2022</small>
+    <div class="text-center">
+        <p class="text-light h1">Welcome to DandyReads</p>
+        <p class="text-justify text-light mt-4">
+            
+                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+
+            
+        </p>
+        <hr class="bg-light">
+        <a href="{%url 'findabook'%}" class="btn btn-dark btn-lg btn-block m-3">Get started</a>
+    </div>
+</div>
 {% endblock %}
