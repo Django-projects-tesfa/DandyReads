@@ -36,6 +36,10 @@ class BooksLibrary(models.Model):
     bookISBN13 = models.IntegerField(max_length=20)
     toReadList = models.BooleanField(default=False)
     completedReading = models.BooleanField(default=False)
+    # read status
+    notStarted = models.BooleanField(default=False)
+    started = models.BooleanField(default=False)
+    done = models.BooleanField(default=False)
 
     def __str__(self):
         # can be changed if needed

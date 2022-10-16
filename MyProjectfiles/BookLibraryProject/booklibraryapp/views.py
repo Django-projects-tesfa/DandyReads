@@ -1,6 +1,4 @@
-from distutils.log import debug
 from django.shortcuts import redirect, render
-from django.http import HttpResponse
 from booklibraryapp.googlebookapi import GoogleBookApi
 from .models import BooksLibrary, Profile
 from .forms import MoveToToReadListForm
@@ -15,17 +13,9 @@ def index(request):
     }
     return render(request, "booklibrary/index.html", context)
 
-def toReadList(request):
-    """
-    userToReadList - list of isbn13 of books in the toReadList of the current user
-    """
-    userToReadList = []
+def jsonBookData(userToReadList):
+    #userToReadList = []
     userToReadBooksJsonList = []
-    if request.user:
-        userprofile = Profile.objects.filter(user = request.user.id)[0]
-        userToReadList = BooksLibrary.objects.filter(toReadList=True)
-    else:
-        userprofile = ''
     baseurl = "https://www.googleapis.com/books/v1/volumes?q="
     googleApi = GoogleBookApi(baseurl)
     for isbn13 in userToReadList:
@@ -35,11 +25,46 @@ def toReadList(request):
             userToReadBooksJsonList.append(bookJson['items'])
         except:
             pass
+    return userToReadBooksJsonList
+
+def toReadList(request):
+    """
+    userToReadList - list of isbn13 of books in the toReadList of the current user
+    """
+    bookLibraryInfo = []
+    userToReadBooksJsonList = []
+    if request.user:
+        userprofile = Profile.objects.filter(user = request.user.id)[0]
+        userToReadList = BooksLibrary.objects.filter(toReadList=True, done=False, started=False)
+    else:
+        userprofile = ''
+    # baseurl = "https://www.googleapis.com/books/v1/volumes?q="
+    # googleApi = GoogleBookApi(baseurl)
+    alreadyReadList = BooksLibrary.objects.filter(toReadList=True, done=True)
+    inProgressReadList = BooksLibrary.objects.filter(toReadList=True, started=True)
+    notStartedBooksList = BooksLibrary.objects.filter(toReadList=True, notStarted=True)
+
+    # for isbn13 in userToReadList:
+    #     bookJson = googleApi.searchBookByISBN13(str(isbn13))
+        
+    #     try:
+    #         dict_ = {}
+    #         userToReadBooksJsonList.append(bookJson['items'])
+    #     except:
+    #         pass
+
+    userToReadBooksJsonList = jsonBookData(userToReadList)
+    alreadyReadToReadBooksJsonList = jsonBookData(alreadyReadList)
+    notStartedBooksJsonList = jsonBookData(notStartedBooksList)
+    inProgressBooksJsonList = jsonBookData(inProgressReadList)
     context = {
         'userToReadList': userToReadList,
         'userToReadBooksJsonList': userToReadBooksJsonList,
+        'alreadyReadToReadBooksJsonList': alreadyReadToReadBooksJsonList,
+        'notStartedBooksJsonList': notStartedBooksJsonList,
+        'inProgressBooksJsonList': inProgressBooksJsonList,
     }
-    print(userToReadList, "count")
+    # print(userToReadList, "count")
     return render(request, "booklibrary/toReadList.html", context)
 
 def bookSideDescription(request, pk):
@@ -48,9 +73,19 @@ def bookSideDescription(request, pk):
     userToReadBooksJsonList = []
     if request.user:
         userprofile = Profile.objects.filter(user = request.user.id)[0]
-        userToReadList = BooksLibrary.objects.filter(userProfile = userprofile, toReadList=True)
+        userToReadList = BooksLibrary.objects.filter(toReadList=True, done=False, started=False)
     else:
         userprofile = ''
+    alreadyReadList = BooksLibrary.objects.filter(toReadList=True, done=True)
+    inProgressReadList = BooksLibrary.objects.filter(toReadList=True, started=True)
+    notStartedBooksList = BooksLibrary.objects.filter(toReadList=True, notStarted=True)
+
+    userToReadBooksJsonList = jsonBookData(userToReadList)
+    alreadyReadToReadBooksJsonList = jsonBookData(alreadyReadList)
+    notStartedBooksJsonList = jsonBookData(notStartedBooksList)
+    inProgressBooksJsonList = jsonBookData(inProgressReadList)
+
+
     baseurl = "https://www.googleapis.com/books/v1/volumes?q="
     googleApi = GoogleBookApi(baseurl)
     selectedBook = googleApi.searchBookByISBN13(pk)
@@ -60,17 +95,21 @@ def bookSideDescription(request, pk):
     time_per_day = 2
     days_needed = math.ceil(total_hourse_needed/time_per_day)
     tip_calculation = str(days_needed)
-    for isbn13 in userToReadList:
-        bookJson = googleApi.searchBookByISBN13(str(isbn13))
-        try:
-            userToReadBooksJsonList.append(bookJson['items'])
-        except:
-            pass
+    # for isbn13 in userToReadList:
+    #     bookJson = googleApi.searchBookByISBN13(str(isbn13))
+    #     try:
+    #         userToReadBooksJsonList.append(bookJson['items'])
+    #     except:
+    #         pass
     context = {
         'userToReadList': userToReadList,
         'userToReadBooksJsonList': userToReadBooksJsonList,
         'selectedBook': selectedBook,
         'tip_calculation': tip_calculation,
+        'alreadyReadToReadBooksJsonList': alreadyReadToReadBooksJsonList,
+        'notStartedBooksJsonList': notStartedBooksJsonList,
+        'inProgressBooksJsonList': inProgressBooksJsonList
+
     }
     return render(request, "booklibrary/bookDescription.html", context)
 

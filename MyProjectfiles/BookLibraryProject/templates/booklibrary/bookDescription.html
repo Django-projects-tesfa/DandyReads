@@ -4,10 +4,12 @@
     <h4>Statistics</h4>
     <hr>
     <div class="border p-3 mb-2">
+        
         <h3>Book title</h3>
         <p class="text-center text-success">
             {{ selectedBook.items.0.volumeInfo.title }}
         </p>
+        
     </div>
 
     <div class="border p-3 mb-2">
@@ -30,29 +32,36 @@
 <div class="border p-3 bg-light mb-2">
     <h4>Status</h4>
     <hr>
-    <div class="border p-3 mb-2">
-        <small class="text-success">Done</small>
-        <h3>Becoming</h3>
-        <p class="text-center">
-            By Michelle Obama
-        </p>
-        <div class="text-center">
-            <a class="btn btn-danger btn-sm">Remove</a>
+    {% for books in inProgressBooksJsonList %}
+        {%for book in books%}
+        <div class="border p-3 mb-2">
+            <small class="text-warning">In Progress</small>
+            <h3>{{ book.volumeInfo.title }}</h3>
+            <p class="text-center">
+                {{ book.volumeInfo.authors }}
+            </p>
+            <div class="text-center">
+                <a class="btn btn-success btn-sm">Done</a>
+            </div>
         </div>
-    </div>
+        {% endfor %}
+    {% endfor %}
 
-    <div class="border p-3 mb-2">
-        <small class="text-warning">In Progress</small>
-        <h3>The Davinci Code</h3>
-        <p class="text-center">
-            By Tesfatsion
-        </p>
-        <div class="text-center">
-            <a class="btn btn-success btn-sm">Done</a>
+    {% for books in alreadyReadToReadBooksJsonList %}
+        {%for book in books%}
+        <div class="border p-3 mb-2">
+            <small class="text-success">Completed</small>
+            <h3>{{ book.volumeInfo.title }}</h3>
+            <p class="text-center">
+                {{ book.volumeInfo.authors }}
+            </p>
+            <div class="text-center">
+                <a class="btn btn-danger btn-sm">Remove</a>
+            </div>
         </div>
-        
-    </div>
-
+        {% endfor %}
+    {% endfor %}
+    
 </div>
 {% endblock %}
 
